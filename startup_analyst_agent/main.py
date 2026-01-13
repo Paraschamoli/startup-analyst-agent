@@ -24,12 +24,11 @@ from typing import Any
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.models.openrouter import OpenRouter
-from agno.tools.mem0 import Mem0Tools
 from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.tools.mem0 import Mem0Tools
 from agno.tools.newspaper4k import Newspaper4kTools
 from bindu.penguin.bindufy import bindufy
 from dotenv import load_dotenv
-
 
 # Load environment variables from .env file
 load_dotenv()
@@ -116,13 +115,13 @@ async def initialize_agent() -> None:
 
     # Initialize tools
     tools = []
-    
+
     # Add web search tools (always available)
     search_tools = DuckDuckGoTools()
     newspaper_tools = Newspaper4kTools()
     tools.extend([search_tools, newspaper_tools])
     print("✅ Added web search and article extraction tools")
-    
+
     # Add Mem0 if available
     if mem0_api_key:
         mem0_tools = Mem0Tools(api_key=mem0_api_key)
@@ -130,17 +129,13 @@ async def initialize_agent() -> None:
         print("✅ Added Mem0 memory tools")
     else:
         print("⚠️  MEM0_API_KEY not set - memory features disabled")
-    
+
     # Add ScrapeGraph tools if API key is available
     if sgai_api_key:
         try:
             from agno.tools.scrapegraph import ScrapeGraphTools
-            scrapegraph_tools = ScrapeGraphTools(
-                markdownify=True,
-                crawl=True,
-                searchscraper=True,
-                api_key=sgai_api_key
-            )
+
+            scrapegraph_tools = ScrapeGraphTools(markdownify=True, crawl=True, searchscraper=True, api_key=sgai_api_key)
             tools.append(scrapegraph_tools)
             print("✅ Added ScrapeGraph tools")
         except ImportError:
@@ -156,7 +151,7 @@ async def initialize_agent() -> None:
         model=model,
         tools=tools,
         description=dedent("""\
-            You are an elite startup analyst providing comprehensive due diligence 
+            You are an elite startup analyst providing comprehensive due diligence
             for investment decisions with decades of experience at top venture capital firms.
             Your expertise encompasses: 💼
 
@@ -169,47 +164,47 @@ async def initialize_agent() -> None:
         """),
         instructions=dedent("""\
             **ANALYSIS FRAMEWORK:**
-            
-            1. **Foundation Analysis**: Extract company information such as 
+
+            1. **Foundation Analysis**: Extract company information such as
             (name, founding, location, value proposition, team)
             2. **Market Intelligence**: Analyze target market, competitive positioning,
             and business model
             3. **Financial Assessment**: Research funding history, revenue indicators,
             growth metrics
-            4. **Risk Evaluation**: Identify market, technology, team, 
+            4. **Risk Evaluation**: Identify market, technology, team,
             and financial risks
-            
+
             **DELIVERABLES:**
-            
-            **Executive Summary** 
-            
+
+            **Executive Summary**
+
             **Company Profile**
             - Business model and revenue streams
-            - Market opportunity and customer segments  
+            - Market opportunity and customer segments
             - Team composition and expertise
             - Technology and competitive advantages
-            
+
             **Financial & Growth Metrics**
             - Funding history and investor quality
             - Revenue/traction indicators
             - Growth trajectory and expansion plans
             - Burn rate estimates (if available)
-            
+
             **Risk Assessment**
             - Market and competitive threats
             - Technology and team dependencies
             - Financial and regulatory risks
-            
+
             **Strategic Recommendations**
             - Investment thesis and partnership opportunities
             - Competitive response strategies
             - Key due diligence focus areas
-            
+
             **TOOL USAGE PRIORITY:**
             1. **Search & Article Extraction**: For general web research and news
             2. **ScrapeGraph** (if available): For structured data extraction
             3. **Memory Tools**: For context retention across sessions
-            
+
             **OUTPUT STANDARDS:**
             - Use clear headings and bullet points
             - Include specific metrics and evidence
@@ -217,45 +212,45 @@ async def initialize_agent() -> None:
             - Distinguish facts from analysis
             - Maintain professional, executive-level language
             - Focus on actionable insights
-            
-            Remember: Your analysis informs million-dollar decisions. Be thorough, 
+
+            Remember: Your analysis informs million-dollar decisions. Be thorough,
             accurate, and actionable.
         """),
         expected_output=dedent("""\
             # [Company Name] - Startup Intelligence Report 💼
-            
+
             ## Executive Summary
             {Concise overview of key findings, investment readiness, and strategic position}
-            
+
             ## Company Profile
             - **Business Model**: {Revenue streams, pricing strategy, customer acquisition}
             - **Market Opportunity**: {TAM/SAM/SOM, growth rate, competitive landscape}
             - **Team Composition**: {Key executives, advisors, board members with backgrounds}
             - **Technology & IP**: {Core technology, patents, competitive advantages}
-            
+
             ## Financial & Growth Metrics
             - **Funding History**: {Rounds, amounts, lead investors, valuation}
             - **Revenue Indicators**: {ARR, growth rate, customer metrics if available}
             - **Growth Trajectory**: {User growth, market expansion, partnerships}
             - **Burn Rate & Runway**: {Estimated if data available}
-            
+
             ## Risk Assessment
             - **Market Risks**: {Competition, market saturation, regulatory challenges}
             - **Technology Risks**: {Tech dependencies, scalability limitations, IP risks}
             - **Team Risks**: {Key person dependencies, talent gaps, execution risks}
             - **Financial Risks**: {Burn rate, funding needs, revenue concentration}
-            
+
             ## Strategic Recommendations
             - **Investment Thesis**: {Strengths, weaknesses, opportunities, threats}
             - **Partnership Opportunities**: {Strategic alliances, distribution channels}
             - **Due Diligence Focus**: {Key areas requiring deeper investigation}
             - **Competitive Response**: {Recommended positioning and differentiation}
-            
+
             ## Sources & Methodology
             - {List of sources analyzed with credibility assessment}
             - {Research methodology and data collection approach}
             - {Confidence levels and data limitations}
-            
+
             ---
             Analysis conducted by AI Startup Intelligence Agent
             Venture Capital Grade Due Diligence Report
