@@ -31,24 +31,19 @@
   "num_history_sessions": 5,
   "environment_variables": [
     {
-      "key": "OPENAI_API_KEY",
-      "description": "OpenAI API key for LLM calls",
-      "required": false
-    },
-    {
       "key": "OPENROUTER_API_KEY",
       "description": "OpenRouter API key for LLM calls",
-      "required": false
+      "required": true
     },
     {
       "key": "SGAI_API_KEY",
       "description": "ScrapeGraph API key for web scraping",
-      "required": false
+      "required": true
     },
     {
       "key": "MEM0_API_KEY",
       "description": "Mem0 API key for memory operations",
-      "required": false
+      "required": true
     }
   ]
 }

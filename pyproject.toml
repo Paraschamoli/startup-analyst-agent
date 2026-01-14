@@ -37,7 +37,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://Paraschamoli.github.io/startup-analyst-agent/"
 Repository = "https://github.com/Paraschamoli/startup-analyst-agent"
-Documentation = "https://Paraschamoli.github.io/startup-analyst-agent/"
+Documentation = "https://github.com/Paraschamoli/startup-analyst-agent#readme"
 "Bug Tracker" = "https://github.com/Paraschamoli/startup-analyst-agent/issues"
 "Changelog" = "https://github.com/Paraschamoli/startup-analyst-agent/releases"
 
