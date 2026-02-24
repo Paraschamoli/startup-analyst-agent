@@ -1,7 +1,3 @@
-# Startup Analysis and Due Diligence Skill
-# AI-powered startup intelligence assistant for comprehensive company analysis
-
-# Basic Metadata
 id: startup-analyst-v1
 name: startup-analyst
 version: 1.0.0
@@ -9,23 +5,20 @@ author: paras25619@gmail.com
 
 # Description
 description: |
-  An AI-powered startup intelligence assistant that provides comprehensive due diligence
-  and business analysis for investment decisions. This skill evaluates startups by
-  analyzing market potential, business models, competition, traction, and risks.
-  It delivers structured insights, SWOT analysis, growth opportunities, and data-driven
-  recommendations to help founders, investors, and analysts make informed strategic decisions.
+  Analyzes startups and private companies by evaluating business models,
+  market opportunity, competitive positioning, financial signals, and risks.
+  Provides structured due diligence reports, SWOT insights, and investment-oriented
+  assessments with balanced opportunity and risk evaluation.
 
 # Tags and Modes
 tags:
-  - startup-analysis
+  - startup
   - due-diligence
   - venture-capital
-  - business-intelligence
-  - market-research
+  - business-analysis
+  - investment
   - competitive-analysis
-  - financial-assessment
-  - risk-evaluation
-  - investment-analysis
+  - market-research
 
 input_modes:
   - text/plain
@@ -34,125 +27,62 @@ input_modes:
 output_modes:
   - text/plain
   - application/json
-  - text/markdown
 
 # Example Queries
 examples:
-  - "Perform comprehensive due diligence on Tesla as a startup investment opportunity"
-  - "Analyze the business model and market potential of OpenAI"
-  - "Evaluate Stripe's competitive positioning and growth trajectory"
-  - "Assess the investment risks and opportunities for SpaceX"
-  - "Provide a SWOT analysis of Airbnb in the current market"
+  - "Perform comprehensive due diligence on Stripe"
+  - "Analyze the business model and risks of OpenAI"
+  - "Evaluate Airbnb as a long-term investment opportunity"
+  - "Provide a SWOT analysis of SpaceX"
+  - "Assess the competitive landscape of Revolut"
 
 # Detailed Capabilities
 capabilities_detail:
-  company_analysis:
+  primary_capability:
     supported: true
-    levels:
-      - quick_assessment
-      - comprehensive_due_diligence
-      - deep_technical_analysis
-    analysis_areas:
-      - business_model_validation
-      - market_opportunity_assessment
-      - competitive_positioning
-      - team_evaluation
-      - technology_analysis
-    time_frame: "current_and_historical"
+    description: "Performs structured startup and company due diligence analysis"
+    features:
+      - "Evaluates business model sustainability"
+      - "Assesses market opportunity and TAM/SAM potential"
+      - "Analyzes competitive positioning and defensibility"
+      - "Reviews funding history and financial indicators"
+      - "Identifies operational, market, and regulatory risks"
+      - "Generates structured executive summaries"
+    limitations: "Private company financials may be limited; projections are inferential and not guaranteed"
 
-  financial_assessment:
+  secondary_capability:
     supported: true
-    metrics:
-      - funding_history_analysis
-      - revenue_indicators
-      - growth_trajectory
-      - burn_rate_estimation
-      - valuation_assessment
-    data_sources:
-      - funding_announcements
-      - market_reports
-      - competitive_intelligence
-      - news_articles
-
-  risk_evaluation:
-    supported: true
-    risk_types:
-      - market_risks
-      - competitive_risks
-      - technology_risks
-      - team_risks
-      - financial_risks
-      - regulatory_risks
-    assessment_methods:
-      - qualitative_analysis
-      - comparative_assessment
-      - scenario_modeling
-    confidence_scoring: true
-
-  strategic_recommendations:
-    supported: true
-    recommendation_types:
-      - investment_thesis
-      - partnership_opportunities
-      - competitive_response
-      - growth_strategies
-      - risk_mitigation
-    formats:
-      - executive_summary
-      - detailed_report
-      - presentation_deck
-      - bullet_point_briefing
-
-  report_generation:
-    supported: true
-    styles:
-      - venture_capital_grade
-      - executive_summary
-      - technical_due_diligence
-      - investor_presentation
-    sections:
-      - executive_summary
-      - company_profile
-      - financial_metrics
-      - risk_assessment
-      - strategic_recommendations
-      - sources_methodology
+    description: "Provides scoring, SWOT insights, and strategic recommendations"
+    features:
+      - "Generates SWOT analysis (Strengths, Weaknesses, Opportunities, Threats)"
+      - "Assigns opportunity and risk scores (0–1 scale)"
+      - "Provides prioritized strategic recommendations"
+      - "Supports competitive comparison (up to 3 companies)"
 
 # Requirements
 requirements:
   packages:
-    - agno>=2.2.0
-    - bindu>=2026.1.12
-    - duckduckgo-search>=7.1.0
-    - newspaper4k>=0.1.1
-    - openai>=1.60.0
-    - python-dotenv>=1.0.1
-    - scrapegraph-py>=1.0.0
-    - mem0ai>=1.0.1
-  system: []
+    - "agno"
+    - "openai or openrouter"
+    - "duckduckgo-search"
+    - "newspaper4k"
+    - "mem0"
+  system:
+    - "Internet access for market and funding verification"
   min_memory_mb: 512
-  external_services:
-    - DuckDuckGo Search API
-    - OpenAI API or OpenRouter API
-    - ScrapeGraph API (optional)
-    - Mem0 API (optional)
 
 # Performance Metrics
 performance:
-  avg_processing_time_ms: 5000
-  avg_time_per_source_ms: 800
+  avg_processing_time_ms: 6000
   max_concurrent_requests: 5
   memory_per_request_mb: 512
-  timeout_seconds: 180
-  max_companies_per_query: 3
   scalability: horizontal
 
 # Tool Restrictions
 allowed_tools:
-  - DuckDuckGoTools
-  - Newspaper4kTools
-  - ScrapeGraphTools
-  - Mem0Tools
+  - Read
+  - Write
+  - Execute
   - Search
   - Analyze
   - Extract
@@ -162,236 +92,180 @@ allowed_tools:
 # Rich Documentation
 documentation:
   overview: |
-    This skill specializes in startup analysis and investment due diligence, providing
-    comprehensive business intelligence for venture capital decisions. It combines
-    market research, financial analysis, competitive intelligence, and risk assessment
-    to deliver actionable insights for investors, founders, and analysts.
+    This skill provides structured, investment-oriented startup analysis.
+    It evaluates business fundamentals, market dynamics, financial signals,
+    and competitive risk factors to generate balanced due diligence reports.
 
-    The agent excels at breaking down complex business opportunities, providing
-    data-driven recommendations, and delivering professional-grade reports suitable
-    for investment committee reviews.
+    Designed for venture capital research, founder strategy review,
+    and investment committee preparation. Outputs include executive summaries,
+    structured risk assessments, and actionable strategic recommendations.
 
   use_cases:
     when_to_use:
-      - User requests startup or company analysis for investment decisions
-      - User needs due diligence on potential investment opportunities
-      - User asks for competitive analysis of companies or industries
-      - User requests business model evaluation or market sizing
-      - User needs risk assessment for strategic planning
-      - User wants executive summaries of company opportunities
+      - "Evaluating startups for investment consideration"
+      - "Performing structured due diligence"
+      - "Assessing business models and scalability"
+      - "Analyzing competitive positioning"
+      - "Identifying risks before strategic decisions"
+      - "Preparing executive or investor-ready summaries"
 
     when_not_to_use:
-      - Simple company information lookup (use general search)
-      - Real-time stock price analysis (use financial data agent)
-      - Legal document analysis (use legal review agent)
-      - Personal financial advice (use financial planning agent)
-      - Code or technical implementation details (use engineering agent)
+      - "Simple company information lookup"
+      - "Real-time stock trading decisions"
+      - "Legal contract review"
+      - "Personal financial advice"
+      - "Technical product debugging"
 
   input_structure: |
-    Accepts startup analysis queries with optional specifications:
+    Accepts startup or company analysis requests in plain text or JSON format.
 
+    Example (Plain Text):
+    "Analyze Stripe's business model and risks"
+
+    Example (JSON):
     {
-      "query": "Company name or analysis request",
+      "query": "Analyze OpenAI as an investment opportunity",
       "analysis_depth": "quick|comprehensive|deep",
-      "report_style": "vc_grade|executive|technical|presentation",
       "focus_areas": ["business_model", "financials", "competition", "risks"],
-      "comparison_companies": ["competitor1", "competitor2"],
-      "time_horizon": "immediate|1_year|3_year|5_year"
+      "comparison_companies": ["Anthropic", "Google DeepMind"],
+      "report_style": "executive|vc_grade|technical"
     }
 
-    Query constraints:
-    - Max query length: 500 characters
-    - Max companies per analysis: 3
-    - Timeout: 180 seconds
-    - Language: English primary
+    Constraints:
+    - Maximum 3 companies per request
+    - English language
+    - Intended for analytical evaluation, not personal investment advice
 
   output_format: |
-    Standard Startup Analysis Report:
-    {
-      "success": true,
-      "report": {
-        "title": "Generated report title",
-        "executive_summary": "Brief overview of analysis...",
-        "company_profile": {
-          "business_model": "Description...",
-          "market_opportunity": "Analysis...",
-          "team_assessment": "Evaluation...",
-          "technology_advantages": "Assessment..."
-        },
-        "financial_assessment": {
-          "funding_history": "Summary...",
-          "growth_metrics": "Analysis...",
-          "valuation_insights": "Assessment..."
-        },
-        "risk_evaluation": {
-          "market_risks": "Analysis...",
-          "competitive_risks": "Assessment...",
-          "financial_risks": "Evaluation...",
-          "overall_risk_score": 0.75
-        },
-        "strategic_recommendations": [
-          "Recommendation 1 with rationale",
-          "Recommendation 2 with rationale"
-        ]
-      },
-      "sources": [
-        {
-          "url": "source_url",
-          "type": "news|funding|report|website",
-          "credibility_score": 0.85,
-          "relevance_score": 0.90,
-          "key_insights": "Extracted insights"
-        }
-      ],
-      "metadata": {
-        "query": "original_query",
-        "processing_time_ms": 6200,
-        "sources_analyzed": 15,
-        "confidence_score": 0.87,
-        "analysis_depth": "comprehensive"
-      }
-    }
+    Returns structured startup analysis with investment-relevant sections.
+
+    Output Structure:
+    - EXECUTIVE SUMMARY:
+      - Investment positioning
+      - Opportunity score (0–1)
+      - Risk score (0–1)
+      - Overall recommendation
+    - COMPANY PROFILE:
+      - Business model
+      - Market opportunity
+      - Competitive positioning
+      - Team assessment
+      - Technology advantages
+    - FINANCIAL ASSESSMENT:
+      - Funding history
+      - Growth indicators
+      - Valuation insights
+    - RISK EVALUATION:
+      - Identified risks with severity
+      - Aggregate risk score
+    - STRATEGIC RECOMMENDATIONS:
+      - Prioritized recommendations with rationale
+    - CONFIDENCE SCORE:
+      - 0–1 scale reflecting data reliability
 
   error_handling:
-    - "No information found: Returns structured explanation of search attempts"
-    - "Private company data limited: Flags data limitations and suggests alternatives"
-    - "Conflicting financial data: Presents multiple sources with credibility assessment"
-    - "Complex analysis timeout: Returns partial results with completion status"
-    - "Unclear company reference: Asks for clarification or provides disambiguation"
-    - "Sensitive financial projections: Includes appropriate disclaimers"
+    - "Ambiguous company reference: Requests clarification"
+    - "Insufficient public data: Notes data limitations in report"
+    - "Too many companies: Limits to 3 and informs user"
+    - "API timeout: Retries up to 3 times before partial return"
+    - "Conflicting financial data: Presents multiple interpretations with source commentary"
 
   examples:
-    - title: "Tesla Startup Analysis"
+    - title: "Stripe Investment Analysis"
       input:
-        query: "Perform comprehensive due diligence on Tesla as a startup investment opportunity"
-        analysis_depth: "comprehensive"
-        report_style: "vc_grade"
+        query: "Perform comprehensive due diligence on Stripe"
       output:
-        success: true
-        report:
-          title: "Tesla Investment Analysis: Electric Vehicle Market Leadership Assessment"
-          executive_summary: "Tesla represents a dominant player in the EV market with..."
-          company_profile: {...}
-          financial_assessment: {...}
-          risk_evaluation: {...}
-        sources: [...]
-        metadata:
-          processing_time_ms: 8500
-          sources_analyzed: 18
-          confidence_score: 0.89
+        executive_summary: "Stripe demonstrates strong SaaS infrastructure positioning..."
+        opportunity_score: 0.82
+        risk_score: 0.36
+        confidence_score: 0.88
+        processing_time_ms: 6200
 
-    - title: "OpenAI Business Model Analysis"
+    - title: "OpenAI Competitive Evaluation"
       input:
-        query: "Analyze the business model and market potential of OpenAI"
+        query: "Analyze OpenAI's competitive risks and market position"
         analysis_depth: "deep"
-        report_style: "technical"
       output:
-        success: true
-        report:
-          title: "OpenAI Strategic Analysis: AI Platform Business Model Evaluation"
-          executive_summary: "OpenAI has transitioned from research lab to commercial AI platform..."
-          company_profile: {...}
-          financial_assessment: {...}
-          risk_evaluation: {...}
-        sources: [...]
-        metadata:
-          processing_time_ms: 7200
-          sources_analyzed: 14
+        executive_summary: "OpenAI holds strong AI platform leadership but faces scaling and regulatory risk..."
+        opportunity_score: 0.85
+        risk_score: 0.48
+        confidence_score: 0.83
+        processing_time_ms: 7100
 
   best_practices:
     for_developers:
-      - "Specify analysis_depth to control research intensity"
-      - "Use report_style to match output to audience (VC vs executive)"
-      - "Include comparison_companies for competitive analysis context"
-      - "Handle private company data limitations gracefully"
-      - "Cache frequent company analyses to improve performance"
-      - "Implement source credibility scoring for confidence assessment"
+      - "Specify analysis_depth for resource control"
+      - "Use structured JSON input for focused analysis"
+      - "Limit comparisons to 3 companies maximum"
+      - "Present uncertainty clearly when financial data is limited"
 
     for_orchestrators:
-      - "Route investment and business analysis queries to this skill"
-      - "Chain with summary agents for executive briefings"
-      - "Consider query complexity for timeout settings"
-      - "Balance depth vs speed based on user urgency"
-      - "Use confidence scores for quality assurance"
-      - "Implement fallback to basic search for simple company info"
-      - "Monitor industry coverage for bias avoidance"
+      - "Route startup, venture, and business model queries here"
+      - "Chain with summarization agent for board-ready briefs"
+      - "Implement timeout logic at 30 seconds"
+      - "Monitor opportunity and risk scoring consistency"
 
   installation: |
     Required packages:
-    pip install agno bindu duckduckgo-search newspaper4k openai python-dotenv scrapegraph-py mem0ai
+    pip install agno openai duckduckgo-search newspaper4k mem0
 
     Environment variables (at least one required):
-    OPENAI_API_KEY=your_openai_api_key
-    OPENROUTER_API_KEY=your_openrouter_api_key  # Alternative to OpenAI
+    - OPENAI_API_KEY
+    - OPENROUTER_API_KEY
 
-    Optional environment variables:
-    SGAI_API_KEY=your_scrapegraph_api_key  # For enhanced scraping
-    MEM0_API_KEY=your_mem0_api_key  # For memory features
+    Optional:
+    - MEM0_API_KEY
 
   versioning:
     - version: "1.0.0"
       date: "2026-01-13"
-      changes: "Initial release with core startup analysis capabilities"
+      changes: "Initial release with structured startup due diligence and scoring"
     - version: "1.1.0"
       status: "planned"
-      changes: "Add financial database integration and revenue estimation models"
-    - version: "1.2.0"
-      status: "planned"
-      changes: "Enhanced predictive analytics and market trend forecasting"
+      changes: "Add financial modeling enhancements and improved risk simulation"
 
 # Assessment fields for skill negotiation
 assessment:
   keywords:
-    - startup
-    - analysis
-    - due diligence
-    - venture capital
-    - investment
-    - business model
-    - market research
-    - competitive analysis
-    - financial assessment
-    - risk evaluation
-    - SWOT
-    - company analysis
-    - business intelligence
-    - strategic recommendations
+    - "startup"
+    - "due diligence"
+    - "investment"
+    - "venture capital"
+    - "business model"
+    - "market opportunity"
+    - "competitive analysis"
+    - "risk assessment"
+    - "SWOT"
+    - "company analysis"
 
   specializations:
-    - domain: technology_startups
+    - domain: "technology startups"
       confidence_boost: 0.4
-    - domain: fintech_analysis
+    - domain: "saas business models"
       confidence_boost: 0.3
-    - domain: saas_business_models
+    - domain: "fintech analysis"
       confidence_boost: 0.3
-    - domain: healthcare_innovation
-      confidence_boost: 0.2
+    - domain: "venture capital research"
+      confidence_boost: 0.4
 
   anti_patterns:
-    - "simple company lookup"
     - "stock price check"
-    - "real-time trading"
-    - "personal financial advice"
-    - "legal document review"
-    - "code implementation"
-    - "product feature request"
-    - "customer support"
+    - "buy or sell recommendation"
+    - "legal contract review"
+    - "technical implementation help"
+    - "simple company lookup"
 
   complexity_indicators:
     simple:
       - "company overview"
-      - "basic information"
-      - "quick facts"
-      - "what does X do"
+      - "basic business model"
     medium:
-      - "business model analysis"
-      - "market opportunity"
-      - "competitive landscape"
-      - "funding history"
+      - "market opportunity analysis"
+      - "funding history review"
+      - "competitive positioning"
     complex:
       - "comprehensive due diligence"
       - "investment thesis"
-      - "risk assessment"
-      - "strategic recommendations"
       - "SWOT analysis"
-      - "growth projections"
+      - "risk modeling"
+      - "multi-company comparison"
