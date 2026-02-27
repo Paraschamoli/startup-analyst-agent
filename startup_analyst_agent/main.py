@@ -76,6 +76,11 @@ def load_config() -> dict:
         "environment_variables": [
             {"key": "OPENAI_API_KEY", "description": "OpenAI API key for LLM calls", "required": False},
             {"key": "OPENROUTER_API_KEY", "description": "OpenRouter API key for LLM calls", "required": False},
+            {
+                "key": "EXA_API_KEY",
+                "description": "Exa API key for web search (preferred over DuckDuckGo)",
+                "required": False,
+            },
             {"key": "SGAI_API_KEY", "description": "ScrapeGraph API key for web scraping", "required": False},
             {"key": "MEM0_API_KEY", "description": "Mem0 API key for memory operations", "required": False},
         ],
@@ -89,6 +94,7 @@ async def initialize_agent() -> None:
     # Get API keys from environment
     openai_api_key = os.getenv("OPENAI_API_KEY")
     openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+    exa_api_key = os.getenv("EXA_API_KEY")
     sgai_api_key = os.getenv("SGAI_API_KEY")
     mem0_api_key = os.getenv("MEM0_API_KEY")
     model_name = os.getenv("MODEL_NAME", "openai/gpt-4o")
@@ -117,7 +123,20 @@ async def initialize_agent() -> None:
     tools = []
 
     # Add web search tools (always available)
-    search_tools = DuckDuckGoTools()
+    if exa_api_key:
+        try:
+            from agno.tools.exa import ExaTools
+
+            search_tools = ExaTools(api_key=exa_api_key)
+            print("✅ Using Exa search tools")
+        except ImportError:
+            print("⚠️  Exa tools not available, falling back to DuckDuckGo")
+            search_tools = DuckDuckGoTools()
+            print("✅ Added DuckDuckGo search tools")
+    else:
+        search_tools = DuckDuckGoTools()
+        print("✅ Added DuckDuckGo search tools")
+
     newspaper_tools = Newspaper4kTools()
     tools.extend([search_tools, newspaper_tools])
     print("✅ Added web search and article extraction tools")
@@ -135,7 +154,7 @@ async def initialize_agent() -> None:
         try:
             from agno.tools.scrapegraph import ScrapeGraphTools
 
-            scrapegraph_tools = ScrapeGraphTools(markdownify=True, crawl=True, searchscraper=True, api_key=sgai_api_key)
+            scrapegraph_tools = ScrapeGraphTools(api_key=sgai_api_key)
             tools.append(scrapegraph_tools)
             print("✅ Added ScrapeGraph tools")
         except ImportError:
@@ -321,6 +340,12 @@ def main():
         type=str,
         default=os.getenv("MEM0_API_KEY"),
         help="Mem0 API key (env: MEM0_API_KEY)",
+    )
+    parser.add_argument(
+        "--exa-api-key",
+        type=str,
+        default=os.getenv("EXA_API_KEY"),
+        help="Exa API key (env: EXA_API_KEY)",
     )
     parser.add_argument(
         "--model",

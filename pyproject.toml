@@ -2,12 +2,12 @@
 name = "startup-analyst-agent"
 version = "0.1.0"
 description = "Startup Analyst Agent is an AI-powered business intelligence assistant that evaluates startups by analyzing market potential, business models, competition, traction, and risks. It provides structured insights, SWOT analysis, growth opportunities, and data-driven recommendations—helping founders, investors, and analysts make informed strategic decisions."
-authors = [{ name = "Paras Chamoli", email = "paras25619@gmail.com" }]
+authors = [{ name = "Paras Chamoli", email = "paras@getbindu.com" }]
 readme = "README.md"
 keywords = ['python', 'ai', 'startup', 'analysis', 'venture-capital', 'due-diligence']
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "bindu==2026.9.2.2",
+    "bindu==2026.9.4",
     "agno>=2.2.0",
     "requests>=2.31.0",
     "rich>=13.0.0",
@@ -18,6 +18,12 @@ dependencies = [
     "lxml_html_clean>=0.1.0",
     "scrapegraph-py>=1.0.0",
     "python-dotenv>=1.0.1",
+    "pydantic>=2.12.5",
+    "urllib3>=2.6.3",
+    "websockets>=15.0.1",
+    "chardet>=6.0.0.post1",
+    "charset-normalizer>=3.4.4",
+    "exa-py>=2.6.0",
 ]
 classifiers = [
     "Intended Audience :: Developers",
