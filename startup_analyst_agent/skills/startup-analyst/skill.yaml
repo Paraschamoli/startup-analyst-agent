@@ -5,10 +5,10 @@ author: paras@getbindu.com
 
 # Description
 description: |
-  Analyzes startups and private companies by evaluating business models,
+  Analyzes startups and private companies using web search and article extraction.
+  Generates markdown-formatted due diligence reports covering business models,
   market opportunity, competitive positioning, financial signals, and risks.
-  Provides structured due diligence reports, SWOT insights, and investment-oriented
-  assessments with balanced opportunity and risk evaluation.
+  Uses LLM-based analysis with internet research capabilities.
 
 # Tags and Modes
 tags:
@@ -30,75 +30,76 @@ output_modes:
 
 # Example Queries
 examples:
+  - "Analyze the startup Notion. Evaluate its business model, market opportunity, competitive landscape, strengths, weaknesses, and growth risks."
+  - "Evaluate the startup Razorpay. Analyze its revenue model, target market, competitive positioning, scalability potential, funding history impact, and key strategic risks."
   - "Perform comprehensive due diligence on Stripe"
-  - "Analyze the business model and risks of OpenAI"
-  - "Evaluate Airbnb as a long-term investment opportunity"
-  - "Provide a SWOT analysis of SpaceX"
-  - "Assess the competitive landscape of Revolut"
+  - "Analyze OpenAI's competitive risks and market position"
 
 # Detailed Capabilities
 capabilities_detail:
   primary_capability:
     supported: true
-    description: "Performs structured startup and company due diligence analysis"
+    description: "Performs web-based startup and company due diligence analysis using LLM"
     features:
-      - "Evaluates business model sustainability"
-      - "Assesses market opportunity and TAM/SAM potential"
-      - "Analyzes competitive positioning and defensibility"
-      - "Reviews funding history and financial indicators"
-      - "Identifies operational, market, and regulatory risks"
-      - "Generates structured executive summaries"
-    limitations: "Private company financials may be limited; projections are inferential and not guaranteed"
+      - "Web search via DuckDuckGo (default) or Exa (if API key provided)"
+      - "Article extraction and content analysis via Newspaper4k"
+      - "LLM-based evaluation of business models and market positioning"
+      - "Research on funding history and financial indicators from public sources"
+      - "Risk identification based on available public information"
+      - "Markdown-formatted executive reports"
+    limitations: "Limited to publicly available information; no proprietary databases; no guaranteed accuracy of web-sourced data; no automated scoring system"
 
   secondary_capability:
     supported: true
-    description: "Provides scoring, SWOT insights, and strategic recommendations"
+    description: "Optional memory and advanced scraping capabilities"
     features:
-      - "Generates SWOT analysis (Strengths, Weaknesses, Opportunities, Threats)"
-      - "Assigns opportunity and risk scores (0–1 scale)"
-      - "Provides prioritized strategic recommendations"
-      - "Supports competitive comparison (up to 3 companies)"
+      - "Context retention across sessions via Mem0 (requires MEM0_API_KEY)"
+      - "Enhanced web scraping via ScrapeGraph (requires SGAI_API_KEY)"
+      - "Supports OpenAI GPT-4o or OpenRouter models"
+    limitations: "Memory and ScrapeGraph features require additional API keys; not enabled by default"
 
 # Requirements
 requirements:
   packages:
     - "agno"
-    - "openai or openrouter"
+    - "openai (for OpenAI models)"
     - "duckduckgo-search"
     - "newspaper4k"
-    - "mem0"
+    - "bindu-penguin"
+    - "python-dotenv"
+  optional_packages:
+    - "mem0 (for memory features)"
+    - "scrapegraph-py (for enhanced scraping)"
   system:
-    - "Internet access for market and funding verification"
+    - "Internet access required"
+    - "At least one API key: OPENAI_API_KEY or OPENROUTER_API_KEY"
   min_memory_mb: 512
 
 # Performance Metrics
 performance:
-  avg_processing_time_ms: 6000
-  max_concurrent_requests: 5
+  avg_processing_time_ms: 15000
+  max_concurrent_requests: "Not specified in code"
   memory_per_request_mb: 512
-  scalability: horizontal
+  scalability: "Depends on LLM provider rate limits"
 
 # Tool Restrictions
 allowed_tools:
-  - Read
-  - Write
-  - Execute
-  - Search
-  - Analyze
-  - Extract
-  - Evaluate
-  - Generate
+  - "DuckDuckGoTools (web search)"
+  - "Newspaper4kTools (article extraction)"
+  - "ExaTools (optional, requires EXA_API_KEY)"
+  - "Mem0Tools (optional, requires MEM0_API_KEY)"
+  - "ScrapeGraphTools (optional, requires SGAI_API_KEY)"
 
 # Rich Documentation
 documentation:
   overview: |
-    This skill provides structured, investment-oriented startup analysis.
-    It evaluates business fundamentals, market dynamics, financial signals,
-    and competitive risk factors to generate balanced due diligence reports.
+    This skill provides LLM-powered startup analysis using web research.
+    It searches the internet for company information, extracts content from articles,
+    and generates markdown-formatted due diligence reports.
 
-    Designed for venture capital research, founder strategy review,
-    and investment committee preparation. Outputs include executive summaries,
-    structured risk assessments, and actionable strategic recommendations.
+    Uses Agno Agent framework with OpenAI GPT-4o or OpenRouter models.
+    Accepts messages via JSON-RPC protocol and returns text-based analysis.
+    No automated scoring or structured data extraction - relies on LLM reasoning.
 
   use_cases:
     when_to_use:
@@ -117,112 +118,116 @@ documentation:
       - "Technical product debugging"
 
   input_structure: |
-    Accepts startup or company analysis requests in plain text or JSON format.
+    Accepts natural language text requests via JSON-RPC message/send method.
 
-    Example (Plain Text):
-    "Analyze Stripe's business model and risks"
-
-    Example (JSON):
+    JSON-RPC Request Format:
     {
-      "query": "Analyze OpenAI as an investment opportunity",
-      "analysis_depth": "quick|comprehensive|deep",
-      "focus_areas": ["business_model", "financials", "competition", "risks"],
-      "comparison_companies": ["Anthropic", "Google DeepMind"],
-      "report_style": "executive|vc_grade|technical"
+      "jsonrpc": "2.0",
+      "method": "message/send",
+      "params": {
+        "message": {
+          "role": "user",
+          "parts": [{"kind": "text", "text": "Analyze the startup Notion..."}],
+          "kind": "message",
+          "messageId": "unique-id",
+          "contextId": "context-id",
+          "taskId": "task-id"
+        },
+        "skillId": "startup-analyst-v1",
+        "configuration": {"acceptedOutputModes": ["application/json"]}
+      },
+      "id": "request-id"
     }
 
     Constraints:
-    - Maximum 3 companies per request
-    - English language
-    - Intended for analytical evaluation, not personal investment advice
+    - Text-based queries only
+    - No structured parameters (analysis_depth, focus_areas, etc.) - not supported by code
+    - LLM interprets request and decides research approach
 
   output_format: |
-    Returns structured startup analysis with investment-relevant sections.
+    Returns markdown-formatted text report via JSON-RPC response.
 
-    Output Structure:
-    - EXECUTIVE SUMMARY:
-      - Investment positioning
-      - Opportunity score (0–1)
-      - Risk score (0–1)
-      - Overall recommendation
-    - COMPANY PROFILE:
-      - Business model
-      - Market opportunity
-      - Competitive positioning
-      - Team assessment
-      - Technology advantages
-    - FINANCIAL ASSESSMENT:
-      - Funding history
-      - Growth indicators
-      - Valuation insights
-    - RISK EVALUATION:
-      - Identified risks with severity
-      - Aggregate risk score
-    - STRATEGIC RECOMMENDATIONS:
-      - Prioritized recommendations with rationale
-    - CONFIDENCE SCORE:
-      - 0–1 scale reflecting data reliability
+    JSON-RPC Response Format:
+    {
+      "jsonrpc": "2.0",
+      "id": "request-id",
+      "result": {
+        "id": "task-id",
+        "status": {"state": "completed"},
+        "history": [{"role": "assistant", "parts": [{"kind": "text", "text": "# Company - Report..."}]}],
+        "artifacts": [{"name": "result", "parts": [{"kind": "text", "text": "# Report..."}]}]
+      }
+    }
+
+    Report Structure (Markdown):
+    - Executive Summary
+    - Company Profile (business model, market, team, technology)
+    - Financial & Growth Metrics (funding, revenue, growth trajectory)
+    - Risk Assessment (market, technology, team, financial risks)
+    - Strategic Recommendations
+    - Sources & Methodology
+
+    Note: No automated scoring system; no structured JSON data extraction
 
   error_handling:
-    - "Ambiguous company reference: Requests clarification"
-    - "Insufficient public data: Notes data limitations in report"
-    - "Too many companies: Limits to 3 and informs user"
-    - "API timeout: Retries up to 3 times before partial return"
-    - "Conflicting financial data: Presents multiple interpretations with source commentary"
+    - "Missing API keys: Raises ValueError with setup instructions"
+    - "Agent not initialized: Raises RuntimeError"
+    - "LLM errors: Propagated from underlying model provider"
+    - "Web search failures: Falls back to available tools or notes limitations"
+    - "No explicit retry logic in code"
 
   examples:
-    - title: "Stripe Investment Analysis"
+    - title: "Notion Startup Analysis"
       input:
-        query: "Perform comprehensive due diligence on Stripe"
+        text: "Analyze the startup Notion. Evaluate its business model, market opportunity, competitive landscape, strengths, weaknesses, and growth risks."
       output:
-        executive_summary: "Stripe demonstrates strong SaaS infrastructure positioning..."
-        opportunity_score: 0.82
-        risk_score: 0.36
-        confidence_score: 0.88
-        processing_time_ms: 6200
+        format: "Markdown text report"
+        sections: "Executive Summary, Company Profile, Financial & Growth Metrics, Risk Assessment, Strategic Recommendations, Sources & Methodology"
+        processing_time: "~20 seconds"
 
-    - title: "OpenAI Competitive Evaluation"
+    - title: "Razorpay Evaluation"
       input:
-        query: "Analyze OpenAI's competitive risks and market position"
-        analysis_depth: "deep"
+        text: "Evaluate the startup Razorpay. Analyze its revenue model, target market, competitive positioning, scalability potential, funding history impact, and key strategic risks."
       output:
-        executive_summary: "OpenAI holds strong AI platform leadership but faces scaling and regulatory risk..."
-        opportunity_score: 0.85
-        risk_score: 0.48
-        confidence_score: 0.83
-        processing_time_ms: 7100
+        format: "Markdown text report"
+        sections: "Executive Summary, Company Profile, Financial & Growth Metrics, Risk Assessment, Strategic Recommendations, Sources & Methodology"
+        processing_time: "~19 seconds"
 
   best_practices:
     for_developers:
-      - "Specify analysis_depth for resource control"
-      - "Use structured JSON input for focused analysis"
-      - "Limit comparisons to 3 companies maximum"
-      - "Present uncertainty clearly when financial data is limited"
+      - "Set at least one API key: OPENAI_API_KEY or OPENROUTER_API_KEY"
+      - "Optional: Set EXA_API_KEY for better search, MEM0_API_KEY for memory, SGAI_API_KEY for scraping"
+      - "Use JSON-RPC protocol for communication"
+      - "Poll tasks/get endpoint to retrieve completed analysis"
+      - "Expect markdown text output, not structured JSON"
 
     for_orchestrators:
-      - "Route startup, venture, and business model queries here"
-      - "Chain with summarization agent for board-ready briefs"
-      - "Implement timeout logic at 30 seconds"
-      - "Monitor opportunity and risk scoring consistency"
+      - "Route startup analysis and due diligence queries here"
+      - "Task status: submitted → completed (async processing)"
+      - "No built-in timeout in code - implement at orchestrator level"
+      - "No scoring system - LLM generates qualitative analysis only"
 
   installation: |
     Required packages:
-    pip install agno openai duckduckgo-search newspaper4k mem0
+    pip install agno openai duckduckgo-search newspaper4k bindu-penguin python-dotenv
 
     Environment variables (at least one required):
-    - OPENAI_API_KEY
-    - OPENROUTER_API_KEY
+    - OPENAI_API_KEY (for OpenAI GPT-4o)
+    - OPENROUTER_API_KEY (for OpenRouter models)
 
-    Optional:
-    - MEM0_API_KEY
+    Optional environment variables:
+    - EXA_API_KEY (for Exa search instead of DuckDuckGo)
+    - MEM0_API_KEY (for memory features)
+    - SGAI_API_KEY (for ScrapeGraph tools)
+    - MODEL_NAME (default: openai/gpt-4o for OpenRouter)
+
+    Run:
+    python -m startup_analyst_agent.main
 
   versioning:
     - version: "1.0.0"
       date: "2026-01-13"
-      changes: "Initial release with structured startup due diligence and scoring"
-    - version: "1.1.0"
-      status: "planned"
-      changes: "Add financial modeling enhancements and improved risk simulation"
+      changes: "Initial release with web-based startup analysis using Agno Agent framework"
 
 # Assessment fields for skill negotiation
 assessment:
@@ -239,14 +244,12 @@ assessment:
     - "company analysis"
 
   specializations:
-    - domain: "technology startups"
-      confidence_boost: 0.4
-    - domain: "saas business models"
-      confidence_boost: 0.3
-    - domain: "fintech analysis"
-      confidence_boost: 0.3
-    - domain: "venture capital research"
-      confidence_boost: 0.4
+    - domain: "publicly documented startups"
+      note: "Performance depends on available web information"
+    - domain: "technology companies"
+      note: "Better coverage due to tech news sources"
+    - domain: "venture-backed companies"
+      note: "Funding data often publicly available"
 
   anti_patterns:
     - "stock price check"
@@ -265,7 +268,6 @@ assessment:
       - "competitive positioning"
     complex:
       - "comprehensive due diligence"
-      - "investment thesis"
-      - "SWOT analysis"
-      - "risk modeling"
-      - "multi-company comparison"
+      - "multi-faceted risk analysis"
+      - "strategic recommendations"
+    note: "All complexity levels use same LLM-based approach; no tiered processing"
